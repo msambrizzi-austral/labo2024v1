@@ -34,11 +34,11 @@ particionar <- function(data, division, agrupa = "", campo = "fold", start = 1, 
 
 ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # particiono estratificadamente el dataset
-  particionar(dataset, division = c(7, 3), agrupa = "clase_ternaria", seed = semilla)
+  particionar(dataset, division = c(7, 3), agrupa = "clase_binaria", seed = semilla)
 
   # genero el modelo
   # quiero predecir clase_ternaria a partir del resto
-  modelo <- rpart("clase_ternaria ~ .",
+  modelo <- rpart("clase_binaria ~ .",
     data = dataset[fold == 1], # fold==1  es training,  el 70% de los datos
     xval = 0,
     control = param_basicos
@@ -59,7 +59,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   ganancia_test <- dataset[
     fold == 2,
     sum(ifelse(prediccion[, "BAJA+2"] > 0.025,
-      ifelse(clase_ternaria == "BAJA+2", 117000, -3000),
+      ifelse(clase_binaria == "BAJA+2", 117000, -3000),
       0
     ))
   ]
@@ -97,6 +97,10 @@ dataset <- fread("./datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
+
+dataset[clase_ternaria == "BAJA+2", clase_binaria := "pos"]
+dataset[clase_ternaria != "BAJA+2", clase_binaria := "neg"]
+dataset[, clase_ternaria := NULL]
 
 # genero el archivo para Kaggle
 # creo la carpeta donde va el experimento
@@ -149,12 +153,10 @@ tb_grid_search <- data.table( max_depth = integer(),
 # maxdepth_values <- seq(4, 14, by = 2)
 # minsplit_values <- seq(10, 1000, by = 10)
 
-
-
-cp_values <- c(-1, -0.9, -0.8, -0.6, -0.5, -0.2, 0)
-maxdepth_values <- c(2, 5, 6, 10, 14, 20, 25, 30)
-minsplit_values <- c(200, 400, 450, 500, 550, 600)
-minbucket_values <- c(1000, 800, 600, 400, 200, 100, 50)
+cp_values <- c(-1, -0.5)
+maxdepth_values <- c(6, 7, 8)
+minsplit_values <- c(300, 400, 500, 600, 700, 800, 900, 1000)
+minbucket_values <- c(150, 200, 250, 300, 350, 400, 450, 500)
 
 # Generate all combinations of parameters
 param_grid <- expand.grid(
