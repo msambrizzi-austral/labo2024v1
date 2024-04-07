@@ -54,11 +54,12 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   #  llamadas "BAJA+1", "BAJA+2"  y "CONTINUA"
   # cada columna es el vector de probabilidades
 
+
   # calculo la ganancia en testing  qu es fold==2
   ganancia_test <- dataset[
     fold == 2,
-    sum(ifelse(prediccion[, "pos"] > 0.025,
-      ifelse(clase_binaria == "pos", 117000, -3000),
+    sum(ifelse(prediccion[, "BAJA+2"] > 0.025,
+      ifelse(clase_binaria == "BAJA+2", 117000, -3000),
       0
     ))
   ]
@@ -109,9 +110,9 @@ dir.create("./exp/HT2020/", showWarnings = FALSE)
 archivo_salida <- "./exp/HT2020/gridsearch.txt"
 
 # genero la data.table donde van los resultados del Grid Search
-#tb_grid_search <- data.table( max_depth = integer(),
-#                              min_split = integer(),
-#                              ganancia_promedio = numeric() )
+tb_grid_search <- data.table( max_depth = integer(),
+                              min_split = integer(),
+                              ganancia_promedio = numeric() )
 
 
 # itero por los loops anidados para cada hiperparametro
@@ -152,10 +153,21 @@ archivo_salida <- "./exp/HT2020/gridsearch.txt"
 # maxdepth_values <- seq(4, 14, by = 2)
 # minsplit_values <- seq(10, 1000, by = 10)
 
-cp_values <- c(-1, -0.5)
-maxdepth_values <- c(6, 7, 8)
-minsplit_values <- c(300, 400, 500, 600, 700, 800, 900, 1000)
-minbucket_values <- c(150, 200, 250, 300, 350, 400, 450, 500)
+# cp_values <- c(-1, -0.9, -0.8, -0.6, -0.5, -0.2, 0)
+# maxdepth_values <- c(2, 5, 6, 10, 14, 20, 25, 30)
+# minsplit_values <- c(200, 400, 450, 500, 550, 600)
+# minbucket_values <- c(1000, 800, 600, 400, 200, 100, 50)
+
+# cp_values <- c(-1)
+# maxdepth_values <- c(5, 6)
+# minsplit_values <- c(510, 508, 506, 504, 502, 500, 498, 496, 494, 492, 490)
+# minbucket_values <- c(230, 228, 226, 224, 222, 220, 218, 216, 214, 212, 210)
+
+cp_values <- c(-1,-0.5)
+maxdepth_values <- c(5,6)
+minsplit_values <- c(600,500)
+minbucket_values <- c(150,160)
+
 
 # Generate all combinations of parameters
 param_grid <- expand.grid(
@@ -163,7 +175,7 @@ param_grid <- expand.grid(
   minbucket = minbucket_values,
   maxdepth = maxdepth_values,
   minsplit = minsplit_values
-)
+) 
 
 # Define a function to run the model and get the average gain
 run_model <- function(params) {
@@ -174,26 +186,18 @@ run_model <- function(params) {
     "maxdepth" = params$maxdepth
   )
   ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas, param_basicos)
-  # print(paste("minsplit=",params$minsplit,
-  #             " - minbucket=",params$minbucket,
-  #             " - maxdepth=",params$maxdepth, 
-  #             " - ganancia=",ganancia_promedio
-  #             )
-  #       )
+  print(paste("CP: " , as.character(as.numeric(params$cp)) , " MINSPLIT:" , as.character(params$minsplit) , " MINBUCKET: " , as.character(params$minbucket) , " MAXDEPTH:" , as.character(params$maxdepth)))
   c(params, ganancia_promedio = ganancia_promedio)
-
 }
 
 # Apply the function to each combination of parameters
 results <- do.call(rbind, lapply(1:nrow(param_grid), function(i) run_model(param_grid[i, ])))
+
+ # Write the results to a CSV file
+write.csv(results, file = "results_Eli.csv", row.names = FALSE) 
 
 # Find the combination of parameters that gives the highest average gain
 best_params <- results[which.max(results$ganancia_promedio), ]
 
 # Print the best parameters
 print(best_params)
-
-fwrite(results,
-       file = archivo_salida,
-       sep = "\t"
-)
