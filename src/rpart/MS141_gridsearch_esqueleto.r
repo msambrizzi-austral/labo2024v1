@@ -78,7 +78,7 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
     semillas, # paso el vector de semillas
     MoreArgs = list(param_basicos), # aqui paso el segundo parametro
     SIMPLIFY = FALSE,
-    mc.cores = 5 # en Windows este valor debe ser 1
+    mc.cores = 1 # en Windows este valor debe ser 1
   )
 
   ganancia_promedio <- mean(unlist(ganancias))
@@ -89,11 +89,12 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
 #------------------------------------------------------------------------------
 
 # Aqui se debe poner la carpeta de la computadora local
-setwd("~/buckets/b1/") # Establezco el Working Directory
+#setwd("~/buckets/b1/") # Establezco el Working Directory
+setwd("C:\\Users\\marcelo.sambrizzi\\OneDrive - LUNDIN MINING CORPORATION\\Documents\\Maestria\\Laboratorio_Implementación_I\\labo2024v1") # Establezco el Working Directory
 # cargo los datos
 
 # cargo los datos
-dataset <- fread("./datasets/dataset_pequeno.csv")
+dataset <- fread("../datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
@@ -163,10 +164,10 @@ tb_grid_search <- data.table( max_depth = integer(),
 # minsplit_values <- c(510, 508, 506, 504, 502, 500, 498, 496, 494, 492, 490)
 # minbucket_values <- c(230, 228, 226, 224, 222, 220, 218, 216, 214, 212, 210)
 
-cp_values <- c(-1, -0.8, -0.6, -0.4)
-maxdepth_values <- c(6, 7, 8)
-minsplit_values <- c(300, 400, 500, 600, 700, 800, 900, 1000)
-minbucket_values <- c(150, 200, 250, 300, 350, 400, 450, 500)
+cp_values <- c(-1)
+maxdepth_values <- c(14)
+minsplit_values <- c(800)
+minbucket_values <- c(240)
 
 
 # Generate all combinations of parameters
@@ -187,6 +188,7 @@ run_model <- function(params) {
   )
   ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas, param_basicos)
   print(paste("CP: " , as.character(as.numeric(params$cp)) , " MINSPLIT:" , as.character(params$minsplit) , " MINBUCKET: " , as.character(params$minbucket) , " MAXDEPTH:" , as.character(params$maxdepth)))
+  print(ganancia_promedio)
   c(params, ganancia_promedio = ganancia_promedio)
 }
 

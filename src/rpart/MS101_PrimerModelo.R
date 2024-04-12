@@ -10,7 +10,7 @@ require("rpart.plot")
 setwd("C:\\Users\\marcelo.sambrizzi\\OneDrive - LUNDIN MINING CORPORATION\\Documents\\Maestria\\Laboratorio_Implementación_I\\labo2024v1") # Establezco el Working Directory
 
 # cargo el dataset
-dataset <- fread("../datasets/dataset_pequeno.csv")
+dataset <- fread("./datasets/dataset_pequeno.csv")
 
 dtrain <- dataset[foto_mes == 202107] # defino donde voy a entrenar
 dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
@@ -22,9 +22,9 @@ modelo <- rpart(
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
         cp = -1, # esto significa no limitar la complejidad de los splits
-        minsplit = 600, # minima cantidad de registros para que se haga el split
-        minbucket = 160, # tamaño minimo de una hoja
-        maxdepth = 6
+        minsplit = 1500, # minima cantidad de registros para que se haga el split
+        minbucket = 500, # tamaño minimo de una hoja
+        maxdepth = 3
 ) # profundidad maxima del arbol
 
 
