@@ -1,4 +1,4 @@
-  # Ensemble de arboles de decision
+    # Ensemble de arboles de decision
   # utilizando el naif metodo de Arboles Azarosos
   # entreno cada arbol utilizando un subset distinto de atributos del dataset
   
@@ -15,10 +15,10 @@
   
   # parameetros rpart
   PARAM$rpart_param <- list(
-    "cp" = -1,
-    "minsplit" = 2000,
-    "minbucket" = 5,
-    "maxdepth" = 8
+    "cp" = -0.5,
+    "minsplit" = 750,
+    "minbucket" = 20,
+    "maxdepth" = 10
   )
   
   # parametros  arbol
@@ -30,7 +30,7 @@
   PARAM$num_trees_max <- 500
   
   #------------------------------------------------------------------------------
-  #------------------------------------------------------------------------------
+  #-------------------------------------- ----------------------------------------
   # Aqui comienza el programa
   
   setwd("~/buckets/b1/") # Establezco el Working Directory
@@ -127,4 +127,5 @@
       cat(arbolito, " ")
     }
   }
+  
   

@@ -74,17 +74,40 @@ prediccion <- predict(modelo, dapply)
 # Genero la entrega para Kaggle
 entrega <- as.data.table(list(
   "numero_de_cliente" = dapply[, numero_de_cliente],
-  "Predicted" = as.numeric(prediccion$predictions[, "BAJA+2"] > 1 / 40)
+  "prob" = prediccion$predictions[, "BAJA+2"],
+  "Predicted" = as.numeric(prediccion$predictions[, "BAJA+2"] > 1/40)
 )) # genero la salida
+
+table(entrega$Predicted)
+
+setorder(entrega, -prob)
+
+
+# genero archivos con los  "envios" mejores
+# deben subirse "inteligentemente" a Kaggle para no malgastar submits
+# si la palabra inteligentemente no le significa nada aun
+# suba TODOS los archivos a Kaggle
+# espera a la siguiente clase sincronica en donde el tema sera explicado
+
+cortes <- seq(8000, 12000, by = 500)
+for (envios in cortes) {
+  entrega[, Predicted := 0L]
+  entrega[1:envios, Predicted := 1L]
+  
+  fwrite(entrega[, list(numero_de_cliente, Predicted)],
+         file = paste0('exp/KA4310/KA4310', "_", envios, ".csv"),
+         sep = ","
+  )
+}
 
 # creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
-dir.create("./exp/", showWarnings = FALSE)
-dir.create("./exp/KA4310/", showWarnings = FALSE)
-archivo_salida <- "./exp/KA4310/KA4310_001.csv"
-
-# genero el archivo para Kaggle
-fwrite(entrega,
-  file = archivo_salida,
-  sep = ","
-)
+# dir.create("./exp/", showWarnings = FALSE)
+# dir.create("./exp/KA4310/", showWarnings = FALSE)
+# archivo_salida <- "./exp/KA4310/KA4310_001.csv"
+# 
+# # genero el archivo para Kaggle
+# fwrite(entrega,
+#   file = archivo_salida,
+#   sep = ","
+# )
