@@ -33,7 +33,7 @@ options(error = function() {
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
 
-PARAM$experimento <- "HT4510"
+PARAM$experimento <- "HT4513"
 
 PARAM$input$dataset <- "./datasets/dataset_pequeno.csv"
 PARAM$input$training <- c(202107) # los meses en los que vamos a entrenar
@@ -51,12 +51,12 @@ PARAM$hyperparametertuning$NEG_ganancia <- -3000
 
 # Aqui se cargan los bordes de los hiperparametros
 hs <- makeParamSet(
-  makeNumericParam("learning_rate", lower = 0.01, upper = 0.04),
-  makeNumericParam("feature_fraction", lower = 0.2, upper = 1.0),
-  makeIntegerParam("min_data_in_leaf", lower = 1300L, upper = 1800),
-  makeIntegerParam("num_leaves", lower = 350L, upper = 1024L),
+  makeNumericParam("learning_rate", lower = 0.05, upper = 0.15),
+  makeNumericParam("feature_fraction", lower = 0.1, upper = 0.2),
+  makeIntegerParam("min_data_in_leaf", lower = 200L, upper = 2000),
+  makeIntegerParam("num_leaves", lower = 16L, upper = 50L),
   makeIntegerParam("max_depth", lower = 6L, upper = 15L),
-  makeIntegerParam("envios", lower = 9000L, upper = 13000L)
+  makeIntegerParam("envios", lower = 8000L, upper = 12500L)
 )
 
 #------------------------------------------------------------------------------
@@ -331,3 +331,4 @@ if (!file.exists(kbayesiana)) {
 
 
 cat("\n\nLa optimizacion Bayesiana ha terminado\n")
+

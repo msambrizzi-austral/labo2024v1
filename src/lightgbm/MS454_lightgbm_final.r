@@ -11,18 +11,18 @@ require("lightgbm")
 # defino los parametros de la corrida, en una lista, la variable global  PARAM
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
-PARAM$experimento <- "KA4540"
+PARAM$experimento <- "KA4544"
 
 PARAM$input$dataset <- "./datasets/dataset_pequeno.csv"
 PARAM$input$training <- c(202107) # meses donde se entrena el modelo
 PARAM$input$future <- c(202109) # meses donde se aplica el modelo
 
 
-PARAM$finalmodel$num_iterations <- 257
-PARAM$finalmodel$learning_rate <- 0.0421055244394719
-PARAM$finalmodel$feature_fraction <- 0.200115823828523
-PARAM$finalmodel$min_data_in_leaf <- 1434
-PARAM$finalmodel$num_leaves <- 464
+PARAM$finalmodel$num_iterations <- 543
+PARAM$finalmodel$learning_rate <- 0.03683857072
+PARAM$finalmodel$feature_fraction <-0.2015590442
+PARAM$finalmodel$min_data_in_leaf <- 465
+PARAM$finalmodel$num_leaves <- 36
 
 
 PARAM$finalmodel$max_bin <- 31
@@ -151,3 +151,4 @@ for (envios in cortes) {
 }
 
 cat("\n\nLa generacion de los archivos para Kaggle ha terminado\n")
+  
