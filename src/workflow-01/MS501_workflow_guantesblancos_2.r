@@ -182,19 +182,27 @@ TS_strategy_guantesblancos_202109 <- function( pmyexp, pinputexps, pserver="loca
 
   param_local$future <- c(202109)
   #param_local$final_train <- c(202107, 202106, 202105)
+<<<<<<< HEAD
   param_local$final_train <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101, 202012, 202011, 202010, 202009, 
                                202008, 202007, 202005, 202002, 202001, 201912, 201911, 201910, 201909, 201908, 201907, 
                                201906, 201905, 201904, 201903, 201902, 201901)
 
+=======
+  param_local$final_train <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101, 202002, 202001, 201912, 201911, 201910, 201909)
+>>>>>>> f494709c5188dc36b684e13fc8caf0b9efef70f7
   
   #param_local$train$training <- c(202105, 202104, 202103)
   #param_local$train$validation <- c(202106)
   #param_local$train$testing <- c(202107)
 
+<<<<<<< HEAD
   param_local$train$training <- c(202105, 202104, 202103, 202102, 202101, 202012, 202011, 202010, 202009, 202008, 202007, 
                                   202005, 202002, 202001, 201912, 201911, 201910, 201909, 201908, 201907, 201906, 201905, 
                                   201904, 201903, 201902, 201901)
 
+=======
+  param_local$train$training <- c(202105, 202104, 202103, 202102, 202101, 202002, 202001, 201912, 201911, 201910, 201909)
+>>>>>>> f494709c5188dc36b684e13fc8caf0b9efef70f7
   param_local$train$validation <- c(202106)
   param_local$train$testing <- c(202107)
 
@@ -343,6 +351,7 @@ corrida_guantesblancos_202109 <- function( pnombrewf, pvirgen=FALSE )
 {
   if( -1 == exp_wf_init( pnombrewf, pvirgen) ) return(0) # linea fija
 
+<<<<<<< HEAD
   DT_incorporar_dataset_default( "DT0001_7", "competencia_2024.csv.gz")
   CA_catastrophe_default( "CA0001_7", "DT0001_7" )
 
@@ -355,6 +364,20 @@ corrida_guantesblancos_202109 <- function( pnombrewf, pvirgen=FALSE )
 
   # El ZZ depente de HT y TS
   ZZ_final_guantesblancos( "ZZ0001_7", c("HT0001_7","TS0001_7") )
+=======
+  DT_incorporar_dataset_default( "DT0001_6", "competencia_2024.csv.gz")
+  CA_catastrophe_default( "CA0001_6", "DT0001_6" )
+
+  DR_drifting_guantesblancos( "DR0001_6", "CA0001_6" )
+  FE_historia_guantesblancos( "FE0001_6", "DR0001_6" )
+
+  TS_strategy_guantesblancos_202109( "TS0001_6", "FE0001_6" )
+
+  HT_tuning_guantesblancos( "HT0001_6", "TS0001_6" )
+
+  # El ZZ depente de HT y TS
+  ZZ_final_guantesblancos( "ZZ0001_6", c("HT0001_6","TS0001_6") )
+>>>>>>> f494709c5188dc36b684e13fc8caf0b9efef70f7
 
 
   exp_wf_end( pnombrewf, pvirgen ) # linea fija
@@ -388,7 +411,11 @@ corrida_guantesblancos_202107 <- function( pnombrewf, pvirgen=FALSE )
 
 # Hago primero esta corrida que me genera los experimentos
 # DT0001, CA0001, DR0001, FE0001, TS0001, HT0001 y ZZ0001
+<<<<<<< HEAD
 corrida_guantesblancos_202109( "gb01_7" )
+=======
+corrida_guantesblancos_202109( "gb01_6" )
+>>>>>>> f494709c5188dc36b684e13fc8caf0b9efef70f7
 
 
 # Luego partiendo de  FE0001
