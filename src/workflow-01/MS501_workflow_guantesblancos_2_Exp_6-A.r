@@ -372,12 +372,12 @@ corrida_guantesblancos_202107 <- function( pnombrewf, pvirgen=FALSE )
   if( -1 == exp_wf_init( pnombrewf, pvirgen) ) return(0) # linea fija
 
   # Ya tengo corrido FE0001 y parto de alli
-  TS_strategy_guantesblancos_202107( "TS0002_7", "FE0001_7" )
+  TS_strategy_guantesblancos_202107( "TS0002_6", "FE0001_6" )
 
-  HT_tuning_guantesblancos( "HT0002_7", "TS0002_7" )
+  HT_tuning_guantesblancos( "HT0002_6", "TS0002_6" )
 
   # El ZZ depente de HT y TS
-  ZZ_final_guantesblancos( "ZZ0002_7", c("HT0002_7", "TS0002_7") )
+  ZZ_final_guantesblancos( "ZZ0002_6", c("HT0002_6", "TS0002_6") )
 
 
   exp_wf_end( pnombrewf, pvirgen ) # linea fija
